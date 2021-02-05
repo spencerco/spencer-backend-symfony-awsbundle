@@ -1,0 +1,21 @@
+{
+  "name": "november-five/aws-bundle",
+  "description": "November Five AWS Bundle",
+  "homepage": "https://bitbucket.org/appstrakt",
+  "require": {
+    "php": ">=5.3.3",
+    "aws/aws-sdk-php": ">=2"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@bitbucket.org:appstrakt/lib_serverside_awsbundle.git"
+    }
+  ],
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-0": {
+      "NovemberFive\\AwsBundle": ""
+    }
+  }
+}

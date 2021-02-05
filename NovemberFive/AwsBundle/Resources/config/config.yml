@@ -1,0 +1,6 @@
+kms:
+sns:
+sqs:
+s3:
+dynamodb:
+lambda:

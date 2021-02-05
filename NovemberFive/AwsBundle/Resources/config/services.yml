@@ -1,0 +1,55 @@
+services:
+    november_five_aws.aws_manager:
+        class: 'NovemberFive\AwsBundle\Service\AWSManager'
+        arguments:
+            - ~
+            - ~
+            - ~
+            - ~
+        public: false
+
+    november_five_aws.sqs_manager:
+        class: 'NovemberFive\AwsBundle\Service\SQSManager'
+        arguments:
+            - '@november_five_aws.aws_manager'
+            - '@november_five_aws.kms_manager'
+        calls:
+            - [ setClient, [ 'Aws\Sqs\SqsClient', '%november_five_aws.sqs_version%' ] ]
+
+    november_five_aws.kms_manager:
+        class: 'NovemberFive\AwsBundle\Service\KMSManager'
+        arguments:
+            - '@november_five_aws.aws_manager'
+            - ~
+        calls:
+            - [ setClient, [ 'Aws\Kms\KmsClient', '%november_five_aws.kms_version%' ] ]
+
+    november_five_aws.sns_manager:
+        class: 'NovemberFive\AwsBundle\Service\SNSManager'
+        arguments:
+            - '@november_five_aws.aws_manager'
+            - '@logger'
+        calls:
+            - [ setClient, [ 'Aws\Sns\SnsClient', '%november_five_aws.sns_version%' ] ]
+
+    november_five_aws.s3_manager:
+        class: 'NovemberFive\AwsBundle\Service\S3Manager'
+        arguments:
+            - '@november_five_aws.aws_manager'
+            - '@logger'
+        calls:
+            - [ setClient, [ 'Aws\S3\S3Client', '%november_five_aws.s3_version%' ] ]
+
+    november_five_aws.dynamodb_manager:
+        class: 'NovemberFive\AwsBundle\Service\DynamoDBManager'
+        arguments:
+            - '@november_five_aws.aws_manager'
+        calls:
+            - [ setClient, [ 'Aws\DynamoDb\DynamoDbClient', '%november_five_aws.dynamodb_version%' ] ]
+
+    november_five_aws.lambda_manager:
+            class: 'NovemberFive\AwsBundle\Service\LambdaManager'
+            arguments:
+                - '@november_five_aws.aws_manager'
+            calls:
+                - [ setClient, [ 'Aws\Lambda\LambdaClient', '%november_five_aws.lambda_version%' ] ]
