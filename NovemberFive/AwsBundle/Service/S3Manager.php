@@ -11,6 +11,7 @@
 namespace NovemberFive\AwsBundle\Service;
 
 use NovemberFive\AwsBundle\Service\Traits\ClientAwareTrait;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 /**
@@ -19,11 +20,11 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
  */
 class S3Manager implements ClientAwareInterface, S3ManagerInterface
 {
-    const FILE_UPDATE       = 'file_update';
-    const FILE_CREATE_ONLY  = 'file_create_only';
+    const FILE_UPDATE      = 'file_update';
+    const FILE_CREATE_ONLY = 'file_create_only';
 
-    const FILE_DELETE       = 'file_delete';
-    const FILE_KEEP         = 'file_keep';
+    const FILE_DELETE = 'file_delete';
+    const FILE_KEEP   = 'file_keep';
 
     use ClientAwareTrait;
 
@@ -46,20 +47,20 @@ class S3Manager implements ClientAwareInterface, S3ManagerInterface
     /**
      * Get an object from a S3 Bucket
      *
-     * @param string        $s3Bucket
-     * @param string        $objectKey
-     * @param null|string   $localFilename
-     * @param string        $flags
-     * @param array         $extraOptions
+     * @param string      $s3Bucket
+     * @param string      $objectKey
+     * @param null|string $localFilename
+     * @param string      $flags
+     * @param array       $extraOptions
      *
      * @return \Guzzle\Service\Resource\Model|null
      */
-    public function getObject($s3Bucket, $objectKey, $saveAs=null, $flags=self::FILE_UPDATE, $extraOptions=array())
+    public function getObject($s3Bucket, $objectKey, $saveAs = null, $flags = self::FILE_UPDATE, $extraOptions = array())
     {
         // Default options
         $options = array(
-            'Bucket'    => $s3Bucket, // bucket
-            'Key'       => $objectKey, // objectKey
+            'Bucket' => $s3Bucket, // bucket
+            'Key'    => $objectKey, // objectKey
         );
 
         $options = array_merge($options, $extraOptions); // Merge options and extra options
@@ -81,20 +82,20 @@ class S3Manager implements ClientAwareInterface, S3ManagerInterface
     /**
      * Upload a Object to s3
      *
-     * @param string    $s3Bucket
-     * @param string    $objectKey
-     * @param string    $file
-     * @param array     $extraOptions
+     * @param string $s3Bucket
+     * @param string $objectKey
+     * @param string $file
+     * @param array  $extraOptions
      *
      * @return mixed
      */
-    public function putObject($s3Bucket, $objectKey, $file, $flags=self::FILE_KEEP, $extraOptions=array())
+    public function putObject($s3Bucket, $objectKey, $file, $flags = self::FILE_KEEP, $extraOptions = array())
     {
         // Default options
         $options = array(
-            'Bucket'        => $s3Bucket,
-            'Key'           => $objectKey,
-            'SourceFile'    => $file,
+            'Bucket'     => $s3Bucket,
+            'Key'        => $objectKey,
+            'SourceFile' => $file,
         );
 
         $options = array_merge($options, $extraOptions); // merge the extra options

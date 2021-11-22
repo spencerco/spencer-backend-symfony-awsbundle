@@ -13,7 +13,9 @@ namespace NovemberFive\AwsBundle\Service;
 use NovemberFive\AwsBundle\Service\Traits\ClientAwareTrait;
 use NovemberFive\AwsBundle\Model\Subscribe;
 use Aws\Sns\Exception\SnsException;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * SNS Manager as helper for communication with the SNS Client
@@ -24,16 +26,12 @@ use Psr\Log\LoggerInterface;
 class SNSManager implements ClientAwareInterface, SNSManagerInterface
 {
     use ClientAwareTrait;
+    use LoggerAwareTrait;
 
     /**
      * @var AwsManagerInterface
      */
     protected $awsManager;
-
-    /**
-     * @var Logger
-     */
-    protected $logger;
 
     /**
      * SnsManager constructor.
@@ -44,7 +42,7 @@ class SNSManager implements ClientAwareInterface, SNSManagerInterface
     public function __construct(AwsManagerInterface $awsManager, LoggerInterface $logger)
     {
         $this->awsManager = $awsManager;
-        $this->logger     = $logger;
+        $this->logger     = new NullLogger();
     }
 
     /**
@@ -190,7 +188,7 @@ class SNSManager implements ClientAwareInterface, SNSManagerInterface
 
             return false;
         } catch (SnsException $e) {
-            $this->logger->notice((string)$e);
+            $this->logger->notice((string) $e);
 
             throw $e;
         }
