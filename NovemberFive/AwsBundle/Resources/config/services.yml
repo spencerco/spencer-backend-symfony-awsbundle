@@ -1,55 +1,41 @@
 services:
-    november_five_aws.aws_manager:
-        class: 'NovemberFive\AwsBundle\Service\AWSManager'
+    _defaults:
+        public: false
+        autoconfigure: true
+        autowire: true
+
+    NovemberFive\AwsBundle\Service\AWSManager:
         arguments:
             - ~
             - ~
             - ~
             - ~
         public: false
+    NovemberFive\AwsBundle\Service\AWSManagerInterface: '@NovemberFive\AwsBundle\Service\AWSManager'
 
-    november_five_aws.sqs_manager:
-        class: 'NovemberFive\AwsBundle\Service\SQSManager'
-        arguments:
-            - '@november_five_aws.aws_manager'
-            - '@november_five_aws.kms_manager'
+    NovemberFive\AwsBundle\Service\SQSManager:
         calls:
             - [ setClient, [ 'Aws\Sqs\SqsClient', '%november_five_aws.sqs_version%' ] ]
 
-    november_five_aws.kms_manager:
-        class: 'NovemberFive\AwsBundle\Service\KMSManager'
+    NovemberFive\AwsBundle\Service\KMSManager:
         arguments:
-            - '@november_five_aws.aws_manager'
-            - ~
+            $kmsKey: ~
         calls:
             - [ setClient, [ 'Aws\Kms\KmsClient', '%november_five_aws.kms_version%' ] ]
 
-    november_five_aws.sns_manager:
-        class: 'NovemberFive\AwsBundle\Service\SNSManager'
-        arguments:
-            - '@november_five_aws.aws_manager'
-            - '@logger'
+    NovemberFive\AwsBundle\Service\SNSManager:
         calls:
             - [ setClient, [ 'Aws\Sns\SnsClient', '%november_five_aws.sns_version%' ] ]
+            - [ setLogger, [ '@?monolog.logger' ] ]
 
-    november_five_aws.s3_manager:
-        class: 'NovemberFive\AwsBundle\Service\S3Manager'
-        arguments:
-            - '@november_five_aws.aws_manager'
-            - '@logger'
+    NovemberFive\AwsBundle\Service\S3Manager:
         calls:
             - [ setClient, [ 'Aws\S3\S3Client', '%november_five_aws.s3_version%' ] ]
 
-    november_five_aws.dynamodb_manager:
-        class: 'NovemberFive\AwsBundle\Service\DynamoDBManager'
-        arguments:
-            - '@november_five_aws.aws_manager'
+    NovemberFive\AwsBundle\Service\DynamoDBManager:
         calls:
             - [ setClient, [ 'Aws\DynamoDb\DynamoDbClient', '%november_five_aws.dynamodb_version%' ] ]
 
-    november_five_aws.lambda_manager:
-            class: 'NovemberFive\AwsBundle\Service\LambdaManager'
-            arguments:
-                - '@november_five_aws.aws_manager'
-            calls:
-                - [ setClient, [ 'Aws\Lambda\LambdaClient', '%november_five_aws.lambda_version%' ] ]
+    NovemberFive\AwsBundle\Service\LambdaManager:
+        calls:
+            - [ setClient, [ 'Aws\Lambda\LambdaClient', '%november_five_aws.lambda_version%' ] ]

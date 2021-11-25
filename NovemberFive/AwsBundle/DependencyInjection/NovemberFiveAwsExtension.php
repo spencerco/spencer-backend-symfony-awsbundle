@@ -36,11 +36,12 @@ class NovemberFiveAwsExtension extends Extension implements PrependExtensionInte
         $config        = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('commands.yml');
         $loader->load('services.yml');
 
 
         // set default region if aws is not configured at all
-        $container->getDefinition('november_five_aws.aws_manager')->replaceArgument(2, self::DEFAULT_REGION);
+        $container->getDefinition('NovemberFive\AwsBundle\Service\AWSManager')->replaceArgument(2, self::DEFAULT_REGION);
 
         # AWS
         if (array_key_exists('aws', $config)) {
@@ -54,7 +55,7 @@ class NovemberFiveAwsExtension extends Extension implements PrependExtensionInte
         # KMS
         if (array_key_exists('kms', $config)) {
             $kmsConfig = $config['kms'];
-            $container->getDefinition('november_five_aws.kms_manager')->replaceArgument(1, $kmsConfig['secret']);
+            $container->getDefinition('NovemberFive\AwsBundle\Service\AWSManager')->replaceArgument(1, $kmsConfig['secret']);
         }
 
         $this->createVersionParameters($container, $config);
@@ -68,7 +69,7 @@ class NovemberFiveAwsExtension extends Extension implements PrependExtensionInte
     {
         // set region if given
         if (array_key_exists('region', $awsConfig)) {
-            $container->getDefinition('november_five_aws.aws_manager')->replaceArgument(2, $awsConfig['region']);
+            $container->getDefinition('NovemberFive\AwsBundle\Service\AWSManager')->replaceArgument(2, $awsConfig['region']);
         }
     }
 
@@ -115,7 +116,7 @@ class NovemberFiveAwsExtension extends Extension implements PrependExtensionInte
     {
         // add proxy is proxy is set
         if (array_key_exists('proxy', $awsConfig)) {
-            $container->getDefinition('november_five_aws.aws_manager')->replaceArgument(3, $awsConfig['proxy']);
+            $container->getDefinition('NovemberFive\AwsBundle\Service\AWSManager')->replaceArgument(3, $awsConfig['proxy']);
         }
     }
 
@@ -127,7 +128,7 @@ class NovemberFiveAwsExtension extends Extension implements PrependExtensionInte
     {
         // set access key if given
         if (array_key_exists('access_key', $awsConfig)) {
-            $container->getDefinition('november_five_aws.aws_manager')->replaceArgument(0, $awsConfig['access_key']);
+            $container->getDefinition('NovemberFive\AwsBundle\Service\AWSManager')->replaceArgument(0, $awsConfig['access_key']);
         }
     }
 
@@ -139,7 +140,7 @@ class NovemberFiveAwsExtension extends Extension implements PrependExtensionInte
     {
         // set secret key if given
         if (array_key_exists('secret_key', $awsConfig)) {
-            $container->getDefinition('november_five_aws.aws_manager')->replaceArgument(1, $awsConfig['secret_key']);
+            $container->getDefinition('NovemberFive\AwsBundle\Service\AWSManager')->replaceArgument(1, $awsConfig['secret_key']);
         }
     }
 
