@@ -29,17 +29,17 @@ class SNSManager implements ClientAwareInterface, SNSManagerInterface
     use LoggerAwareTrait;
 
     /**
-     * @var AwsManagerInterface
+     * @var AWSManagerInterface
      */
     protected $awsManager;
 
     /**
      * SnsManager constructor.
      *
-     * @param AwsManagerInterface $awsManager
+     * @param AWSManagerInterface $awsManager
      * @param LoggerInterface     $logger
      */
-    public function __construct(AwsManagerInterface $awsManager, LoggerInterface $logger)
+    public function __construct(AWSManagerInterface $awsManager, LoggerInterface $logger)
     {
         $this->awsManager = $awsManager;
         $this->logger     = new NullLogger();
