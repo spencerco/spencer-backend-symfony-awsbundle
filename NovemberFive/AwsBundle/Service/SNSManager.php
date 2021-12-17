@@ -58,7 +58,6 @@ class SNSManager implements ClientAwareInterface, SNSManagerInterface
     public function createPlatformEndpoint($applicationArn, $token, $customerUserData, array $options = array())
     {
         $arn = null;
-
         try {
             $arguments = array_merge(
                 array(

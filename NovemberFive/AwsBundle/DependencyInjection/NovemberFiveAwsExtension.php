@@ -34,15 +34,13 @@ class NovemberFiveAwsExtension extends Extension implements PrependExtensionInte
     {
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
-
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader        = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('commands.yml');
         $loader->load('services.yml');
 
 
         // set default region if aws is not configured at all
         $container->getDefinition('NovemberFive\AwsBundle\Service\AWSManager')->replaceArgument(2, self::DEFAULT_REGION);
-
         # AWS
         if (array_key_exists('aws', $config)) {
             $awsConfig = $config['aws'];
@@ -55,7 +53,7 @@ class NovemberFiveAwsExtension extends Extension implements PrependExtensionInte
         # KMS
         if (array_key_exists('kms', $config)) {
             $kmsConfig = $config['kms'];
-            $container->getDefinition('NovemberFive\AwsBundle\Service\AWSManager')->replaceArgument(1, $kmsConfig['secret']);
+            $container->getDefinition('NovemberFive\AwsBundle\Service\KMSManager')->replaceArgument('$kmsKey', $kmsConfig['secret']);
         }
 
         $this->createVersionParameters($container, $config);
